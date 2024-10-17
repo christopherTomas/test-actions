@@ -16,10 +16,10 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: Put current date into a variable
-      run: |
-        $NOW=& Get-Date -format yyyy-MM-dd
-        echo "NOW=$NOW" >> $env:GITHUB_ENV
-    - name: get env date var
-      run: echo ${{ env.EXPIRYDATE }}
+      - name: Set current date as env variable
+        run: echo "NOW=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+      - name: Echo current date
+        run: echo $NOW
+      - name: get repo env date var
+        run: echo ${{ env.EXPIRYDATE }}
     
