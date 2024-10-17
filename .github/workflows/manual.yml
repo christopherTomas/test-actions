@@ -24,5 +24,6 @@ jobs:
         run: echo ${{ vars.EXPIRYDATE }}
       - name: Test
         run: |
-          echo "difference_in_hours=$(( ($(date -d ${{ env.NOW }} +%s) - $(date -d ${{ vars.EXPIRYDATE }} +%s) ) / 3600 ))" >>  "$GITHUB_OUTPUT"
-    
+          echo "DIFF_HOUR=$(( ($(date -d ${{ env.NOW }} +%s) - $(date -d ${{ vars.EXPIRYDATE }} +%s) ) / 3600 ))" >> $GITHUB_ENV
+      - name: Echo DIFF
+        run: echo $DIFF_HOUR
