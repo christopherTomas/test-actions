@@ -22,4 +22,7 @@ jobs:
         run: echo $NOW
       - name: get repo env date var
         run: echo ${{ vars.EXPIRYDATE }}
+      - name: Test
+        run: |
+          echo "difference_in_hours=$(( ( $(date +%s) - $(date -d ${{ github.event.pull_request.created_at }} +%s) ) / 3600 ))" >>  "$GITHUB_OUTPUT"
     
