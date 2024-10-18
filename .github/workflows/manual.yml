@@ -11,19 +11,29 @@ on:
 jobs:
   # This workflow contains a single job called "greet"
   datetest:
-    # The type of runner that the job will run on
+    name: Calculate the current difference between expiration date and current date in hours
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Set current date as env variable
         run: echo "NOW=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
       - name: Echo current date
         run: echo $NOW
-      - name: get repo env date var
+      - name: Get repository predefined expiry date variable
         run: echo ${{ vars.EXPIRYDATE }}
-      - name: Test
+      - name: Calculate diff in hours between the date values
         run: |
           echo "DIFF_HOUR=$(( ($(date -d ${{ vars.EXPIRYDATE }} +%s) - $(date -d ${{ env.NOW }} +%s) ) / 3600 ))" >> $GITHUB_ENV
       - name: Echo DIFF
         run: echo $DIFF_HOUR
+
+  checkdate:
+    name: Checks the date diff with an condition
+    if:  ${{ env.DIFF_HOUR <= 6 }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Job work
+        run: echo "do something"
+
+    
