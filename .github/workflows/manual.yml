@@ -29,11 +29,10 @@ jobs:
 
   checkdate:
     name: Checks the date diff with an condition
-    if:  ${{ env.DIFF_HOUR <= 6 }}
     runs-on: ubuntu-latest
 
     steps:
-      - name: Job work
-        run: echo "do something"
+      - name: Use Variable
+        run: echo "${{ env.DIFF_HOUR }}"
 
     
