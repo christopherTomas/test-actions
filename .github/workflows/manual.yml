@@ -13,6 +13,8 @@ jobs:
   datetest:
     name: Calculate the current difference between expiration date and current date in hours
     runs-on: ubuntu-latest
+    outputs:
+      diff-value: ${{ steps.diff-hour.outputs.DIFF_HOUR }} 
 
     steps:
       - name: Set current date as env variable
@@ -22,17 +24,19 @@ jobs:
       - name: Get repository predefined expiry date variable
         run: echo ${{ vars.EXPIRYDATE }}
       - name: Calculate diff in hours between the date values
+        id: diff-hour
         run: |
-          echo "DIFF_HOUR=$(( ($(date -d ${{ vars.EXPIRYDATE }} +%s) - $(date -d ${{ env.NOW }} +%s) ) / 3600 ))" >> $GITHUB_ENV
+          echo "DIFF_HOUR=$(( ($(date -d ${{ vars.EXPIRYDATE }} +%s) - $(date -d ${{ env.NOW }} +%s) ) / 3600 ))" >> $GITHUB_OUTPUT
       - name: Echo DIFF
         run: echo $DIFF_HOUR
 
   checkdate:
+    needs: datetest
     name: Checks the date diff with an condition
     runs-on: ubuntu-latest
 
     steps:
       - name: Use Variable
-        run: echo "${{ env.DIFF_HOUR }}"
+        run: echo "${{ needs.datetest.outputs.diff-value }}"
 
     
